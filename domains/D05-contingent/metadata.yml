@@ -21,9 +21,9 @@ short_title: Контингент
 depends_on:
   - D01
   - D04
+  - D06
 
 related_to:
-  - D06
   - D09
   - D13
 
