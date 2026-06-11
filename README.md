@@ -32,6 +32,7 @@
 |---|---|
 | Получение или переоформление лицензии | [D02 → D02-P01](domains/D02-licensing/processes/D02-P01.md) |
 | Государственная аккредитация | [D02 → D02-P02](domains/D02-licensing/processes/D02-P02.md) |
+| Лицензирование ДО/ДПО (дистанционно) | [D02 → D02-P03](domains/D02-licensing/processes/D02-P03.md) |
 | Приёмная кампания | [D05 → D05-P01](domains/D05-contingent/processes/D05-P01.md) |
 | Конкурсный отбор и ранжирование | [D05 → D05-P03](domains/D05-contingent/processes/D05-P03.md) |
 | Зачисление обучающегося | [D05 → D05-P02](domains/D05-contingent/processes/D05-P02.md) |
@@ -43,11 +44,13 @@
 | Ликвидация академической задолженности | [D04 → D04-P02](domains/D04-education/processes/D04-P02.md) |
 | Разработка и утверждение ОПОП | [D06 → D06-P01](domains/D06-umd/processes/D06-P01.md) |
 | Актуализация ОПОП при смене ФГОС | [D06 → D06-P02](domains/D06-umd/processes/D06-P02.md) |
+| Ведение раздела «Сведения об ОО» (`/sveden/`) | [D11 → D11-P01](domains/D11-communications/processes/D11-P01.md) |
 
 ### Знаю что мне нужно
 - [Реестр НПА по доменам](domains/D01-normative/regulatory-registry.md)
 - [Таблица ОПФ и уровней образования](domains/D02-licensing/best-practices/opf-education-levels.md)
 - [Классификатор приказов по контингенту](domains/D05-contingent/data-model/entities.md)
+- [Словарь микроразметки sveden (`/sveden/`)](standards/sveden/)
 
 ---
 
@@ -89,7 +92,8 @@ edu-framework/
 │   ├── fgos/
 │   │   ├── schema/             JSON Schema
 │   │   └── data/               конкретные ФГОС в JSON
-│   └── fz-273/
+│   ├── fz-273/
+│   └── sveden/                  словарь микроразметки «Сведения об ОО» (D11)
 │
 ├── packs/                      готовые наборы под цели
 ├── tools/                      автоматизация
@@ -112,7 +116,7 @@ edu-framework/
 | D08 | Научная деятельность | Кадры и наука | — | ✓ | ◑ | — | ◑ | ✓ |
 | [D09](domains/D09-finance/) | Финансы и ресурсы | Обеспечение | draft | ✓ | ✓ | ◑ | ✓ | ✓ |
 | D10 | Воспитательная работа | Обеспечение | — | ✓ | ✓ | ✓ | — | ◑ |
-| D11 | Коммуникации и публичность | Внешний контур | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| [D11](domains/D11-communications/) | Коммуникации и публичность | Внешний контур | draft | ✓ | ✓ | ✓ | ✓ | ✓ |
 | [D12](domains/D12-digital/) | Цифровая инфраструктура | Внешний контур | draft | ✓ | ✓ | ◑ | ◑ | ✓ |
 | D13 | Качество и отчётность | Сквозной | — | ✓ | ✓ | ✓ | ✓ | ✓ |
 

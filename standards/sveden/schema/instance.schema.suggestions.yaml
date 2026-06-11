@@ -1,0 +1,114 @@
+# Предложения по расширению framework/schema/instance.schema.yaml
+# Сводка всех from:"TBD" из base.yaml v9.0.0. Это ПРЕДЛОЖЕНИЯ — утверди/переименуй,
+# затем заменишь "TBD" на конкретные пути в base.yaml.
+# Поля, уже существующие в твоей модели (org.full_name, programs[].title, teachers[].* и т.п.), здесь не дублируются.
+
+docs:                          # электронные документы / ссылки
+  ustav: link
+  pvr_obuchayushihsya: link    # правила внутреннего распорядка обучающихся
+  pvtr: link                   # правила внутреннего трудового распорядка
+  kollektivnyy_dogovor: link   # при наличии
+  samoobsledovanie: link
+  predpisaniya: link           # при наличии
+  priem: link                  # ЛНА
+  rezhim_zanyatiy: link        # ЛНА
+  tekushchiy_kontrol: link     # ЛНА
+  perevod_otchislenie: link    # ЛНА
+  vozniknovenie_otnosheniy: link  # ЛНА
+  fgos: link
+  edu_standart: link           # при наличии
+  fed_trebovaniya: link
+  sam_trebovaniya: link        # при наличии
+  poryadok_platnyh: link
+  obrazec_dogovora: link
+  stoimost_obucheniya: link
+  plata_roditeley: link        # присмотр/уход (дошкольное/интернат/ГПД)
+  plan_fhd: link               # для частного ООО — опционально
+  hostel_payment: link
+  health: link                 # охрана здоровья
+  languages: link              # languageEl (ЭД — языки обучения)
+  chislennost: link            # eduChislenEl (ЭД — численность обучающихся)
+  priem_results: link          # eduPriemEl (ЭД — результаты приёма)
+  perevod_results: link        # eduPerevodEl (ЭД — перевод/восстановление/отчисление)
+  # ОТКРЫТО: 5 ЛНА (priem/rezhim/tekKontrol/perevod/voz) — держать коллекцией docs.lna[] с дискриминатором?
+
+org:
+  director: { phone: str, email: str }   # к существующим name, position
+  accreditation: { link: link }
+  deputies[]: { name, position, phone, email }       # замы руководителя
+  branches[]: { name, head_name, head_post, head_phone, head_email, address, email, site, polozhenie }  # филиалы (struct.filInfo + managers.rucovodstvoFil)
+  representations[]: { name, head_name, head_post, address, email, site, polozhenie }                    # представительства (struct.repInfo)
+  places:                      # места осуществления деятельности (common, addressPlace*)
+    network[]: address
+    practice[]: address
+    podg[]: address
+    gia[]: address
+    oppo[]: address
+
+programs[]:                    # к существующим title, type, form, term, total_hours, numberStudents, language
+  code: str                    # eduCode (для ДПП обычно пусто)
+  profile: str                 # eduProf — направленность/профиль
+  course: str                  # eduCourse (для ДПО пусто)
+  subjects: str                # eduPred — учебные предметы/курсы/дисциплины
+  practices: str               # eduPrac — практики
+  docs:                        # эл.документы по программе (eduOp)
+    op_main: link              # opMain — описание ОП
+    plan: link                 # educationPlan — учебный план
+    rpd[]: link                # educationRpd — РПД по каждой дисциплине (список)
+    schedule: link             # educationShedule — календарный учебный график
+    practice_programs: link    # eduPr — рабочие программы практик
+    methodology: link          # methodology — метод.документы + раб.программы воспитания
+  nir:                         # eduNir — научная деятельность
+    directions: str            # perechenNir
+    results: str               # resultNir
+    base: str                  # baseNir
+    school: str                # napravNir (название научного направления/школы; пример стр.48, опциональный)
+  graduates:                   # graduateJob — трудоустройство
+    total: int                 # v1
+    employed: int              # t1
+  vacant_fed: int              # numberBFVacant
+  vacant_reg: int              # numberBRVacant
+  vacant_mun: int              # numberBMVacant
+  vacant_paid: int             # numberPVacant (вакантные МЕСТА, не контингент)
+
+teachers[]:                    # переименовано из staff[] (подраздел teachingStaff — коллекция педагогов); итератор teacher
+                               # к существующим fio, position, taught(→teachingDiscipline), education(→teachingLevel)
+  degree: str
+  academ_status: str
+  qualification: str           # повышение квалификации за 3 года
+  prof_retraining: str
+  experience_years: int
+  programs: str                # teachingOp — ОП, в которых участвует
+
+budget:
+  fed_volume: num              # finBFVolume
+  reg_volume: num              # finBRVolume
+  mun_volume: num              # finBMVolume
+  paid_volume: num             # finPVolume
+  years[]: { year: int, income: num, expense: num }   # группа volume
+
+infra:                         # к существующим platform.url (→comNet), ovz
+  cabinets[]: { name, address, equipment, ovz }          # purposeCab
+  practice_objects[]: { name, address, equipment, ovz }  # purposePrac
+  libraries[]: { name, address, ovz }                    # purposeLibr
+  sport_objects[]: { name, address, ovz }                # purposeSport
+  facilities: str              # purposeFacil — средства обучения и воспитания
+  facilities_ovz: str          # purposeFacilOvz
+  networks_ovz: str            # comNetOvz
+  eor[]: link                  # erList — электронные образовательные ресурсы (включает platform.url)
+  eor_ovz[]: link              # erListOvz
+  tech_ovz: str                # techOvz — спец. технические средства обучения
+  hostel_intern_access: str    # hostelInterOvz — доступ в общежитие/интернат (только objects)
+  hostel: { count: int, places: int, places_ovz: int }   # общая Табл.3.9.4 (objects + grants)
+  intern: { count: int, places: int, places_ovz: int }   # общая Табл.3.9.4
+  catering[]: { name, address, ovz }                     # объекты питания
+  health: str                                            # охрана здоровья
+
+grants:
+  stipend: str                 # grant
+  social_support: str          # support
+
+international[]:                # inter.internationalDog
+  state: str
+  org: str
+  requisites: str              # наименование, дата, номер, срок действия
