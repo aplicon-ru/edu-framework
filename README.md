@@ -41,6 +41,7 @@
 | Расторжение договора и возврат средств | [D09 → D09-P05](domains/D09-finance/processes/D09-P05.md) |
 | Учебное событие и журнал посещаемости | [D04 → D04-P01](domains/D04-education/processes/D04-P01.md) |
 | Ликвидация академической задолженности | [D04 → D04-P02](domains/D04-education/processes/D04-P02.md) |
+| Практика (направление, дневник, защита) | [D04 → D04-P03](domains/D04-education/processes/D04-P03.md) |
 
 ### Знаю что мне нужно
 - [Реестр НПА по доменам](domains/D01-normative/regulatory-registry.md)
