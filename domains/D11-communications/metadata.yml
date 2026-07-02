@@ -1,0 +1,57 @@
+id: D11
+title: Коммуникации и публичность
+slug: D11-communications
+cluster: external
+version: 0.1.0
+status: draft
+
+applicability:
+  vuz: required
+  spo: required
+  do: required
+  dpo: required
+  aspirantura: required
+
+typical_owner: Приёмная комиссия / Отдел по связям с общественностью / Веб-администратор
+
+last_reviewed: 2026-06-11
+review_cycle_months: 12
+
+short_title: Коммуникации
+
+depends_on:
+  - D01
+  - D02
+
+related_to:
+  - D05
+  - D06
+  - D07
+  - D09
+  - D12
+
+regulatory_refs:
+  - "ФЗ-273 — ст. 29 (информационная открытость образовательной организации)"
+  - "ПП РФ от 20.10.2021 № 1802 — Правила размещения информации на официальном сайте ОО"
+  - "Приказ Рособрнадзора от 04.08.2023 № 1493 (в ред. № 1353 от 03.07.2025, с 01.03.2026)
+    — требования к структуре сайта, раздел «Сведения об образовательной организации»"
+  - "ФЗ-152 — обработка персональных данных при публикации сведений о работниках/обучающихся"
+
+gis_integrations:
+  - АИС «Мониторинг» Рособрнадзора (проверка раздела sveden)
+
+cds_tag: false
+
+packs:
+  - vuz-base
+  - spo-base
+  - admission
+
+tags:
+  - sveden
+  - information-openness
+  - website
+  - communications
+
+authors:
+  - iMironRU

@@ -1,0 +1,97 @@
+# Каноническая схема данных организации (instance). Контракт для всех генераторов,
+# которые читают одну модель организации и рендерят разные проекции:
+#   sveden:<подраздел> — раздел сайта «Сведения об образовательной организации» (D11);
+#   license             — пакет документов на лицензирование (D02).
+# Поле: { type, req: обязательность, used_by: [license | sveden:<подраздел>] }
+# used_by делает явной связь «одни данные → много рендеров».
+#
+# Базовый слой (org, subdivisions, staff→teachers, infra, docs) — универсален для
+# любой ОО. Поля programs[].podvid/type — пример расширения для ДО/ДПО (профиль
+# «дистанционное обучение»); другие типы программ (ВО/СПО) добавляют свои enum-значения
+# по месту, не меняя структуру.
+
+org:
+  legal_form:   { type: "enum[ooo, ano, chu, ip, gosudarstvennoe_uchrezhdenie, ...]", req: true,  used_by: [license, "sveden:common"] }   # см. D02 best-practices/opf-education-levels.md
+  full_name:    { type: str,  req: true,  used_by: [license, "sveden:common"] }
+  short_name:   { type: str,  req: true,  used_by: [license, "sveden:common"] }
+  inn:          { type: str,  req: true,  used_by: [license, "sveden:common"] }
+  kpp:          { type: str,  req: true,  used_by: [license] }
+  ogrn:         { type: str,  req: true,  used_by: [license, "sveden:common"] }
+  registered:   { type: date, req: true,  used_by: ["sveden:common"] }
+  director:
+    name:       { type: str,  req: true,  used_by: [license, "sveden:struct", "sveden:managers"] }
+    position:   { type: str,  req: true,  used_by: [license, "sveden:managers"] }
+    inn:        { type: str,  req: false, used_by: [license] }
+  founders:                 # список учредителей (для главного тега uchredLaw)
+    type: list
+    item:
+      name:     { type: str, req: true,  used_by: ["sveden:common"] }
+      address:  { type: str, req: false, used_by: ["sveden:common"] }
+      phone:    { type: str, req: false, used_by: ["sveden:common"] }
+      email:    { type: str, req: false, used_by: ["sveden:common"] }
+      site:     { type: str, req: false, used_by: ["sveden:common"] }
+  address:
+    legal:      { type: str,  req: true,  used_by: [license, "sveden:common", "sveden:struct"] }
+    actual:     { type: str,  req: false, used_by: [license] }
+  work_time:    { type: str,  req: true,  used_by: ["sveden:common"] }   # режим/график (онлайн 24/7)
+  contacts:
+    site:       { type: str,  req: true,  used_by: ["sveden:struct"] }
+    email:      { type: str,  req: true,  used_by: [license, "sveden:common", "sveden:struct"] }
+    phone:      { type: str,  req: true,  used_by: [license, "sveden:common"] }
+  okved:
+    main:       { type: str,  req: true,  used_by: [license] }
+    education_present:  { type: list, req: false, used_by: [license] }
+    education_to_add:   { type: list, req: false, used_by: [license] }
+  bank:         { type: object, req: false, used_by: [license] }   # для договоров
+  license:
+    link:       { type: link, req: false, used_by: ["sveden:common"] }  # выписка из реестра лицензий → licenseDocLink
+    series:     { type: str,  req: false, used_by: ["sveden:common"] }  # после получения
+    number:     { type: str,  req: false, used_by: ["sveden:common"] }
+    date:       { type: date, req: false, used_by: ["sveden:common"] }
+    authority:  { type: str,  req: true,  used_by: [license, "sveden:common"] }
+
+subdivisions:               # структурные образовательные подразделения
+  type: list
+  item:
+    name:       { type: str, req: true, used_by: [license, "sveden:struct"] }
+    head:       { type: str, req: true, used_by: ["sveden:struct"] }
+    head_post:  { type: str, req: true, used_by: ["sveden:struct"] }
+
+programs:
+  type: list
+  item:
+    id:            { type: str,  req: true,  used_by: [] }
+    podvid:        { type: "enum[do,dpo,...]",   req: false, used_by: [license, "sveden:education"] }   # пример расширения для ДО/ДПО
+    type:          { type: "enum[obshcherazv,pk,pp,...]", req: false, used_by: [license, "sveden:education"] }   # пример расширения для ДПО
+    title:         { type: str,  req: true,  used_by: [license, "sveden:education"] }
+    form:          { type: str,  req: true,  used_by: [license, "sveden:education"] }
+    total_hours:   { type: int,  req: true,  used_by: [license, "sveden:education"] }
+    term:          { type: str,  req: true,  used_by: ["sveden:education"] }
+    final_document: { type: str,  req: true,  used_by: [license] }
+    qualification: { type: str,  req: false, used_by: [license] }
+    prof_standard: { type: str,  req: false, used_by: [license] }
+    language:      { type: str,  req: true,  used_by: ["sveden:education"], default: "русский" }
+    numberStudents: { type: int,  req: true,  used_by: ["sveden:education"] }
+    modules:       { type: list, req: true,  used_by: [license] }
+
+teachers:                   # переименовано из staff (итератор teacher; подраздел employees → teachingStaff)
+  type: list
+  item:
+    fio:           { type: str, req: true, used_by: [license, "sveden:employees"] }
+    position:      { type: str, req: true, used_by: [license, "sveden:employees"] }
+    education:     { type: str, req: true, used_by: [license, "sveden:employees"] }
+    taught:        { type: str, req: true, used_by: ["sveden:employees"] }
+    experience_total:   { type: str, req: false, used_by: [license] }
+    experience_special: { type: str, req: false, used_by: [license] }
+
+infra:                      # ЭИОС / МТО (для очной формы — здания, кабинеты, см. suggestions)
+  platform:     { type: object, req: false, used_by: [license, "sveden:objects"] }   # name,type,url — для ДО/ЭИОС
+  vcs:          { type: str,    req: false, used_by: [license, "sveden:objects"] }
+  hosting:      { type: object, req: false, used_by: [license, "sveden:objects"] }
+  functions:    { type: object, req: false, used_by: [license] }   # 5 функций ПП1678 (для ЭО/ДОТ)
+  ovz:          { type: str,    req: true,  used_by: ["sveden:objects"] }
+  pdn:          { type: object, req: true,  used_by: [license] }
+
+docs:                       # ссылки на ЛНА/документы (для divisionClauseDocLink и раздела «Документы»)
+  polozhenie_podrazdelenie: { type: link, req: true, used_by: ["sveden:struct", "sveden:document"] }
+  lna:                      { type: list, req: true, used_by: ["sveden:document"] }
