@@ -42,6 +42,7 @@
 | Расторжение договора и возврат средств | [D09 → D09-P05](domains/D09-finance/processes/D09-P05.md) |
 | Учебное событие и журнал посещаемости | [D04 → D04-P01](domains/D04-education/processes/D04-P01.md) |
 | Ликвидация академической задолженности | [D04 → D04-P02](domains/D04-education/processes/D04-P02.md) |
+| Практика (направление, дневник, защита) | [D04 → D04-P03](domains/D04-education/processes/D04-P03.md) |
 | Разработка и утверждение ОПОП | [D06 → D06-P01](domains/D06-umd/processes/D06-P01.md) |
 | Актуализация ОПОП при смене ФГОС | [D06 → D06-P02](domains/D06-umd/processes/D06-P02.md) |
 | Ведение раздела «Сведения об ОО» (`/sveden/`) | [D11 → D11-P01](domains/D11-communications/processes/D11-P01.md) |

@@ -1,0 +1,42 @@
+id: D14
+title: Расписание и планирование учебного процесса
+slug: D14-schedule
+cluster: core
+version: 0.1.0
+status: draft
+
+applicability:
+  vuz: required
+  spo: required
+  do: partial
+  dpo: partial
+  aspirantura: required
+
+typical_owner: Учебно-методическое управление
+last_reviewed: 2026-06-26
+review_cycle_months: 12
+
+short_title: Расписание
+
+depends_on:
+  - D05            # административные группы — источник для именованных отборов
+  - D06            # учебный план — что планируется
+
+related_to:
+  - D04            # реализация: D14 порождает учебные события D04
+  - D07            # нагрузка ППС — потребляет данные расписания
+
+applicability_notes: |
+  ДО/ДПО — partial: базовые механики применимы, но форматы расписания
+  и именованных отборов могут существенно отличаться от стационара.
+
+tags:
+  - schedule
+  - planning
+  - named-selection
+  - teacher-load
+
+cds_tag: false
+
+authors:
+  - iMironRU
