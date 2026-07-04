@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/iMironRU/edu-framework/standards/fgos/schema/fgos.schema.json",
+  "$id": "https://github.com/aplicon-ru/edu-framework/standards/fgos/schema/fgos.schema.json",
   "title": "ФГОС",
   "description": "JSON Schema для машиночитаемого представления Федерального государственного образовательного стандарта (ФГОС)",
   "type": "object",

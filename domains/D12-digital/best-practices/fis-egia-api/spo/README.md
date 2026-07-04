@@ -1,6 +1,6 @@
 # API СПО — Среднее профессиональное образование
 
-> Часть [edu-framework](https://github.com/iMironRU/edu-framework) · Домен D12-digital  
+> Часть [edu-framework](https://github.com/aplicon-ru/edu-framework) · Домен D12-digital  
 > Версия API: **1.0** (2025) · Формат схем: **JSON Schema** (в отличие от ВУЗ — XSD)
 
 ---

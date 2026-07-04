@@ -1,6 +1,6 @@
 # ФИС ГИА и Приём — Документация API
 
-> Часть [edu-framework](https://github.com/iMironRU/edu-framework) · Домен D12-digital
+> Часть [edu-framework](https://github.com/aplicon-ru/edu-framework) · Домен D12-digital
 
 | | ВУЗ (Высшее образование) | СПО (Среднее профессиональное) |
 |---|---|---|
