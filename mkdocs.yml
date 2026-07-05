@@ -4,15 +4,6 @@ repo_url: https://github.com/aplicon-ru/edu-framework
 repo_name: aplicon-ru/edu-framework
 edit_uri: edit/main/
 
-docs_dir: .
-site_dir: site
-
-exclude_docs: |
-  CLAUDE.md
-  inbox/*
-  tools/*
-  site/*
-
 theme:
   name: material
   language: ru

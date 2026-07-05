@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - run: mkdocs build
+      - run: bash tools/build-site.sh
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
