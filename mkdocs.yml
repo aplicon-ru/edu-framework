@@ -1,0 +1,48 @@
+site_name: Фреймворк управления образовательной организацией
+site_url: https://aplicon-ru.github.io/edu-framework/
+repo_url: https://github.com/aplicon-ru/edu-framework
+repo_name: aplicon-ru/edu-framework
+edit_uri: edit/main/
+
+docs_dir: .
+site_dir: site
+
+exclude_docs: |
+  CLAUDE.md
+  inbox/*
+  tools/*
+  site/*
+
+theme:
+  name: material
+  language: ru
+  palette:
+    - scheme: slate
+      primary: teal
+      accent: light-blue
+      toggle:
+        icon: material/weather-sunny
+        name: Переключить на светлую тему
+    - scheme: default
+      primary: teal
+      accent: blue
+      toggle:
+        icon: material/weather-night
+        name: Переключить на тёмную тему
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+
+plugins:
+  - search
+
+markdown_extensions:
+  - tables
+  - toc:
+      permalink: true
