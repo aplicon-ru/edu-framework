@@ -13,4 +13,9 @@
 - Документация ФИС ГИА API в `best-practices/fis-egia-api/`:
   - API ВО v3.5.0: getting-started, scenarios, reference, entities, classifiers, XSD-схемы (168 файлов)
   - API СПО v1.0: JSON Schema (98 файлов), spo/README
-- Изначальный драфт: Claude Sonnet 4.6, отредактирован вручную
+- `best-practices/gosklyuch-integration.md` — полный жизненный цикл интеграции с сервисом
+  «Отправка документов на подпись в Госключ» через ЕПГУ / ЕСИА: настройка прав, получение
+  API-Key, работа с Access Token, спецификация API, требования к ZIP-архивам,
+  жизненный цикл заявления, типовые применения в ОО. Источник: `framework.univercon.aplicon.ru`
+  (архивный репо, разбираем из inbox).
+- Изначальный драфт: Claude Sonnet 4.6 / Opus 4.8, отредактирован вручную
