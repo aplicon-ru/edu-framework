@@ -56,5 +56,9 @@ tags:
   - admission
   - enrollment
 
+implementations:
+  - univercon      # прототип, из которого перенесены классификатор приказов и таксономия статусов
+  - kabitoriy      # личный кабинет обучающегося — витрина контингента
+
 authors:
   - iMironRU

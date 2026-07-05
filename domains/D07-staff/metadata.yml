@@ -47,5 +47,8 @@ tags:
   - workload
   - org-structure
 
+implementations:
+  - univercon      # прототип, из которого перенесена типовая оргструктура ВО/СПО/ДПО
+
 authors:
   - iMironRU
