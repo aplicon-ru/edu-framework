@@ -25,3 +25,8 @@ tmp/
 .env
 reviews/
 docs/review-status.json
+
+# MkDocs — docs/ собирается динамически из domains/standards/implementations
+# скриптом tools/build-site.sh; site/ — результат mkdocs build
+docs/
+site/
