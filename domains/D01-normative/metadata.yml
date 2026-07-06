@@ -41,7 +41,7 @@ cds_tag: false
 gis_integrations: []
 
 implementations:
-  - univercon      # прототип, из которого перенесён исходный реестр НПА и виды образования
+  - univercon-legacy    # прототип-архив, из которого перенесён реестр НПА и виды образования
 
 authors:
   - iMironRU

@@ -43,5 +43,9 @@ tags:
   - debt
   - practice
 
+implementations:
+  - univerkon      # активная 1С-реализация: события, ведомости, задолженность, зачётка
+  - didakticon     # PWA-ЭИОС: карточка события, регистрация, формы контроля, педпульт
+
 authors:
   - iMironRU

@@ -49,5 +49,9 @@ tags:
   - competencies
   - norm-axis
 
+implementations:
+  - univerkon      # активная 1С-реализация: ОПОП, УП, РПД, ФОС, компетенции
+  - didakticon     # PWA-ЭИОС: пакет занятия как манифест поверх РПД
+
 authors:
   - iMironRU

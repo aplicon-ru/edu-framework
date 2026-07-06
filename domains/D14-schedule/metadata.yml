@@ -38,5 +38,9 @@ tags:
 
 cds_tag: false
 
+implementations:
+  - univerkon      # активная 1С-реализация: расписание, именованные отборы, нагрузка ППС
+  - didakticon     # PWA-ЭИОС: расписание студента, дашборд событий
+
 authors:
   - iMironRU
