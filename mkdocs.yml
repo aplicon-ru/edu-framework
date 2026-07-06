@@ -1,5 +1,7 @@
 site_name: Фреймворк управления образовательной организацией
+site_description: Открытый отраслевой стандарт для управления образовательными организациями РФ (ВУЗ, СПО, ДО, ДПО, аспирантура)
 site_url: https://aplicon-ru.github.io/edu-framework/
+site_author: aplicon-ru
 repo_url: https://github.com/aplicon-ru/edu-framework
 repo_name: aplicon-ru/edu-framework
 edit_uri: edit/main/
@@ -8,22 +10,25 @@ theme:
   name: material
   language: ru
   palette:
-    - scheme: slate
-      primary: teal
-      accent: light-blue
-      toggle:
-        icon: material/weather-sunny
-        name: Переключить на светлую тему
-    - scheme: default
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
       primary: teal
       accent: blue
       toggle:
         icon: material/weather-night
         name: Переключить на тёмную тему
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: light-blue
+      toggle:
+        icon: material/weather-sunny
+        name: Переключить на светлую тему
   features:
     - navigation.tabs
     - navigation.sections
     - navigation.indexes
+    - navigation.top
     - toc.integrate
     - search.suggest
     - search.highlight
@@ -31,9 +36,28 @@ theme:
     - content.action.edit
 
 plugins:
-  - search
+  - search:
+      lang: ru
+  - mermaid2
 
 markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
   - tables
   - toc:
       permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+  - pymdownx.tabbed:
+      alternate_style: true
