@@ -1,0 +1,1348 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/aplicon-ru/edu-framework/standards/rpd/schema/discipline-program-twin.schema.json",
+  "title": "Двойник рабочей программы дисциплины",
+  "description": "JSON Schema цифрового двойника РПД, модель v0.2.0. Валидирует единый объект, обслуживающий заполнение, проверку, печать, обратное восстановление и трассировку. Слои forms/print/reverseImport описывают представление и реализацию; норма — context/content/fieldRegistry/validation/relations.",
+  "$comment": "АДРЕСАЦИЯ ПУТЕЙ. Поля path/source/binding используют точечную нотацию от корня объекта (например content.generalCharacteristics.workload.totalHours). Суффикс [] означает «каждый элемент массива по этому пути» — это шаблонный путь, а не указатель на конкретный элемент; для адресации конкретного значения экземпляра применяется JSON Pointer (RFC 6901) с числовыми индексами. Уникальный ключ записи реестра — fieldId; значение path может повторяться у записей, описывающих варианты одного массива (например типы форм контроля). ИСТОЧНИК ИСТИНЫ. Поля с source.sourceType=curriculum/opop/reference и fillMode=derived являются read-only проекциями внешних объектов (учебный план, ОПОП, справочники); их редактирование выполняется в источнике, а не в Двойнике. ВЕРСИОНИРОВАНИЕ. Двойник не несёт собственной оси версий: логическая версия РПД фиксируется участием редакции в Версии ОПОП (edu-framework D06). context.education.academicYear и context.documentLifecycle описывают документооборот и не подменяют норму-версию.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "twinMeta",
+    "context",
+    "sourceModel",
+    "content",
+    "fieldRegistry",
+    "forms",
+    "print",
+    "reverseImport",
+    "validation",
+    "provenance",
+    "relations",
+    "audit"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "twinMeta": {
+      "$ref": "#/$defs/twinMeta"
+    },
+    "context": {
+      "$ref": "#/$defs/context"
+    },
+    "sourceModel": {
+      "$ref": "#/$defs/sourceModel"
+    },
+    "content": {
+      "$ref": "#/$defs/content"
+    },
+    "fieldRegistry": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fieldRegistryItem"
+      }
+    },
+    "forms": {
+      "$ref": "#/$defs/formsLayer"
+    },
+    "print": {
+      "$ref": "#/$defs/printLayer"
+    },
+    "reverseImport": {
+      "$ref": "#/$defs/reverseImportLayer"
+    },
+    "validation": {
+      "$ref": "#/$defs/validationLayer"
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenanceLayer"
+    },
+    "relations": {
+      "$ref": "#/$defs/relationsLayer"
+    },
+    "audit": {
+      "$ref": "#/$defs/auditLayer"
+    }
+  },
+  "$defs": {
+    "educationDirection": {
+      "type": "string",
+      "enum": [
+        "DO",
+        "SPO",
+        "BACHELOR",
+        "SPECIALIST",
+        "MASTER",
+        "ORDINATURA",
+        "ASPIRANTURA",
+        "DPO"
+      ]
+    },
+    "educationDirectionGroup": {
+      "type": "string",
+      "enum": [
+        "DO",
+        "SPO",
+        "VO",
+        "DPO"
+      ]
+    },
+    "educationLevel": {
+      "type": "string",
+      "enum": [
+        "DO",
+        "SPO",
+        "VO",
+        "DPO"
+      ]
+    },
+    "twinMeta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "twinId",
+        "twinType",
+        "twinModelVersion",
+        "status"
+      ],
+      "properties": {
+        "twinId": {
+          "type": "string"
+        },
+        "twinType": {
+          "const": "disciplineProgram"
+        },
+        "twinName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "twinModelVersion": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "examples": [
+            "0.2.0"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "template",
+            "instance",
+            "draft",
+            "in_review",
+            "approved",
+            "published",
+            "archived",
+            "imported",
+            "requires_update"
+          ]
+        },
+        "createdAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "organizationContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "organizationId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "organizationName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "departmentId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "departmentName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "supportedDirection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/educationDirection"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "group": {
+          "$ref": "#/$defs/educationDirectionGroup"
+        }
+      }
+    },
+    "educationContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "educationLevel": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "DO",
+            "SPO",
+            "VO",
+            "DPO",
+            null
+          ]
+        },
+        "educationDirection": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "DO",
+            "SPO",
+            "BACHELOR",
+            "SPECIALIST",
+            "MASTER",
+            "ORDINATURA",
+            "ASPIRANTURA",
+            "DPO",
+            null
+          ]
+        },
+        "educationDirectionGroup": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "DO",
+            "SPO",
+            "VO",
+            "DPO",
+            null
+          ]
+        },
+        "supportedDirections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/supportedDirection"
+          }
+        },
+        "educationProgramId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "educationProgramName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "specialtyCode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "specialtyName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "profile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "qualification": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "academicYear": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "disciplineContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "disciplineId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "disciplineCode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "disciplineName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "moduleId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "moduleName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "curriculumId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "opopId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fgosId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "documentLifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "documentId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "documentVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "documentStatus": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "draft",
+            "in_review",
+            "approved",
+            "published",
+            "archived",
+            "requires_correction",
+            "ready_for_approval",
+            null
+          ]
+        },
+        "approvalStatus": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approvedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "validFrom": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "validTo": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "organization",
+        "education",
+        "discipline",
+        "documentLifecycle"
+      ],
+      "properties": {
+        "organization": {
+          "$ref": "#/$defs/organizationContext"
+        },
+        "education": {
+          "$ref": "#/$defs/educationContext"
+        },
+        "discipline": {
+          "$ref": "#/$defs/disciplineContext"
+        },
+        "documentLifecycle": {
+          "$ref": "#/$defs/documentLifecycle"
+        }
+      }
+    },
+    "worksheetMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "worksheetName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sectionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "sourceModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "wireframe": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceFileName": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "interpretation": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "worksheets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/worksheetMap"
+              }
+            }
+          }
+        },
+        "canonicalPrinciple": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "flexibleSection": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "$comment": "Раздел содержания. Field-level контракт задаётся fieldRegistry; здесь допускается эволюционирующая структура.",
+      "additionalProperties": true
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "generalCharacteristics",
+        "learningOutcomes",
+        "thematicPlan",
+        "lessonCards",
+        "implementationConditions"
+      ],
+      "properties": {
+        "generalCharacteristics": {
+          "$ref": "#/$defs/flexibleSection"
+        },
+        "learningOutcomes": {
+          "$ref": "#/$defs/flexibleSection"
+        },
+        "thematicPlan": {
+          "$ref": "#/$defs/flexibleSection"
+        },
+        "lessonCards": {
+          "$ref": "#/$defs/flexibleSection"
+        },
+        "implementationConditions": {
+          "$ref": "#/$defs/flexibleSection"
+        }
+      }
+    },
+    "fieldSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceType"
+      ],
+      "properties": {
+        "sourceType": {
+          "type": "string",
+          "enum": [
+            "manual",
+            "curriculum",
+            "opop",
+            "reference",
+            "typicalProgram",
+            "classroomFund",
+            "contracts",
+            "external",
+            "system",
+            "content",
+            "manual_or_curriculum",
+            "manual_or_program",
+            "manual_or_reference",
+            "template_or_manual"
+          ]
+        },
+        "fillMode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "manual",
+            "derived",
+            "link",
+            "mixed",
+            "select_from_reference",
+            "calculated_or_flag",
+            "derived_or_manual",
+            "derived_or_select",
+            "manual_or_derived",
+            "select_or_default",
+            "select_or_derived",
+            "select_or_manual",
+            "template_or_manual",
+            null
+          ]
+        },
+        "sourcePath": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "fieldPresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "formLabel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "printLabel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceWorksheet": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "fieldRegistryItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fieldId",
+        "path",
+        "section",
+        "valueType"
+      ],
+      "properties": {
+        "fieldId": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "section": {
+          "type": "string",
+          "enum": [
+            "generalCharacteristics",
+            "learningOutcomes",
+            "thematicPlan",
+            "lessonCards",
+            "implementationConditions"
+          ]
+        },
+        "formGroup": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "valueType": {
+          "type": "string",
+          "enum": [
+            "string",
+            "number",
+            "boolean",
+            "array",
+            "object",
+            "reference",
+            "richText",
+            "controlFormItem",
+            "integerOrString"
+          ]
+        },
+        "itemType": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "personReference",
+            "manualPerson",
+            "reference",
+            "disciplineReference",
+            "practiceReference",
+            "contractReference",
+            "competencyResult",
+            "indicator",
+            "controlForm",
+            "studyPeriod",
+            "topic",
+            "lesson",
+            "lessonCard",
+            "literatureItem",
+            "electronicResource",
+            "equipmentItem",
+            "softwareItem",
+            "text",
+            null
+          ]
+        },
+        "multiple": {
+          "type": "boolean"
+        },
+        "applicableDirections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/educationDirection"
+          }
+        },
+        "applicableDirectionGroups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/educationDirectionGroup"
+          }
+        },
+        "source": {
+          "$ref": "#/$defs/fieldSource"
+        },
+        "presentation": {
+          "$ref": "#/$defs/fieldPresentation"
+        },
+        "wireframe": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "formGroupRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "groupId",
+        "fields"
+      ],
+      "properties": {
+        "groupId": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "formSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sectionId",
+        "groups"
+      ],
+      "properties": {
+        "sectionId": {
+          "type": "string"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceWorksheet": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/formGroupRef"
+          }
+        }
+      }
+    },
+    "formProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "direction",
+        "sections"
+      ],
+      "properties": {
+        "direction": {
+          "$ref": "#/$defs/educationDirection"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/formSection"
+          }
+        }
+      }
+    },
+    "formsLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "activeProfileId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "profiles": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/educationDirection"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/formProfile"
+          }
+        }
+      }
+    },
+    "printSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sectionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "printBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bindingId",
+        "path"
+      ],
+      "properties": {
+        "bindingId": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "label": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "placeholder": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceSection": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "renderAs": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "text",
+            "list",
+            "table",
+            "paragraphs",
+            "computed",
+            null
+          ]
+        }
+      }
+    },
+    "printLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "defaultTemplateId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supportedFormats": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "docx",
+              "pdf",
+              "html",
+              "odt"
+            ]
+          }
+        },
+        "roundTripMode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "semantic",
+            "pixel",
+            null
+          ]
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/printSection"
+          }
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/printBinding"
+          }
+        }
+      }
+    },
+    "extractionTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "target": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "reverseImportLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supportedSourceFormats": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "docx",
+              "pdf",
+              "xlsx",
+              "html"
+            ]
+          }
+        },
+        "strategy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "extractionTargets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/extractionTarget"
+          }
+        }
+      }
+    },
+    "validationRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ruleId",
+        "type",
+        "severity"
+      ],
+      "properties": {
+        "ruleId": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "applicability",
+            "required",
+            "calculation",
+            "crossField",
+            "type",
+            "range",
+            "sum",
+            "consistency",
+            "reference_integrity",
+            "custom"
+          ]
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "applicableDirections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/educationDirection"
+          }
+        },
+        "requiredFor": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/educationDirection"
+          }
+        },
+        "expression": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warning",
+            "error",
+            "critical"
+          ]
+        }
+      }
+    },
+    "validationLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/validationRule"
+          }
+        }
+      }
+    },
+    "provenanceRecord": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "sourceType": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "manual_input",
+            "curriculum",
+            "education_program",
+            "opop",
+            "fgos",
+            "reference",
+            "typical_program",
+            "pdf",
+            "docx",
+            "xlsx",
+            "html",
+            "import",
+            "calculation",
+            null
+          ]
+        },
+        "sourceId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourcePath": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourcePage": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "sourceFragment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "extractionMethod": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "manual",
+            "automatic",
+            "semi_automatic",
+            "imported",
+            "computed",
+            null
+          ]
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "verificationStatus": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "not_checked",
+            "verified",
+            "requires_review",
+            "conflict",
+            null
+          ]
+        },
+        "verifiedBy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verifiedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "provenanceLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fieldSources": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/provenanceRecord"
+          }
+        },
+        "sourceDocuments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "verificationLog": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "relationLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to",
+        "relationType"
+      ],
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "relationType": {
+          "type": "string",
+          "enum": [
+            "derivedFrom",
+            "implements",
+            "evidences",
+            "references",
+            "partOf",
+            "dependsOn",
+            "generatedFrom",
+            "renderedTo",
+            "extractedFrom",
+            "requiresReview"
+          ]
+        },
+        "comment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "relationsLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relationLink"
+          }
+        }
+      }
+    },
+    "auditChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "changedAt",
+        "changedBy",
+        "path",
+        "changeType"
+      ],
+      "properties": {
+        "changedAt": {
+          "type": "string"
+        },
+        "changedBy": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "changeType": {
+          "type": "string",
+          "enum": [
+            "created",
+            "updated",
+            "deleted",
+            "imported",
+            "verified",
+            "approved"
+          ]
+        }
+      }
+    },
+    "auditLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "createdBy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "createdAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "updatedBy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "updatedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "changeLog": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/auditChange"
+          }
+        }
+      }
+    }
+  }
+}
