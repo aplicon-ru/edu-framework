@@ -151,6 +151,18 @@
 **Связи.** `derivedFrom` → ФГОС (`standards/fgos`); `partOf` → Версия ОПОП;
 `references` → Строка учебного плана; `evidences` ← ФОС / оценочные материалы.
 
+**Формат адресации — JSON Pointer (RFC 6901), не собственная нотация.** Поля
+`fieldSource.sourcePath` (внутри одного документа) и `relationLink.from`/`.to`
+(между документами, включая внешние — `standards/fgos/data/*.json`) объявлены
+в схеме с `format: json-pointer` / `format: uri-reference`. Решение принято по
+итогам разбора `inbox/2026-07-06-univercon-fgos-rp-konspekt.md` («Вопрос 1»,
+common-ярус): вместо изобретения собственного языка связей — принят
+существующий IETF-стандарт (JSON Pointer) для адресации и паттерн JSON
+Reference (`file.json#/pointer`) для межфайловых ссылок. ⚠ Формат объявлен как
+целевой; 91 существующее значение `sourcePath` в эталонном шаблоне пока в
+dot-notation (`curriculum.discipline.name`), не мигрировано — см. открытый
+вопрос в CHANGELOG.
+
 ### 1.7 Фонд оценочных средств (ФОС)
 
 Версионируемый компонент: чем измеряется достижение индикаторов.
