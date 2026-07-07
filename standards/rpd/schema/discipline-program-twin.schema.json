@@ -580,7 +580,9 @@
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "format": "json-pointer",
+          "description": "Адрес поля-источника в формате JSON Pointer (RFC 6901), напр. /curriculum/professionalModule/name. Не dot-notation."
         },
         "note": {
           "type": [
@@ -1230,10 +1232,14 @@
       ],
       "properties": {
         "from": {
-          "type": "string"
+          "type": "string",
+          "format": "uri-reference",
+          "description": "Адрес источника связи: JSON Pointer внутри этого документа (/content/...) либо URI-reference на внешний файл с фрагментом-указателем (standards/fgos/data/FGOS-VO-44.03.04-2017.json#/competencies/universal/0)."
         },
         "to": {
-          "type": "string"
+          "type": "string",
+          "format": "uri-reference",
+          "description": "Адрес цели связи — тот же формат, что у from."
         },
         "relationType": {
           "type": "string",
