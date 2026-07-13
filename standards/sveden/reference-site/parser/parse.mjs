@@ -128,6 +128,18 @@ function extractValue($, el) {
   return text || null;
 }
 
+// Реальная находка (orgma.ru, разделы managers/vacant/education): один и тот же
+// itemprop нередко стоит ДВАЖДЫ — на строке заголовка таблицы (<thead>, с текстом
+// подписи столбца вместо значения) и на строке данных (<tbody>, с настоящим
+// значением). По порядку в DOM <thead> идёт первым — наивный ".first()" вместо
+// значения возвращает подпись. Правило общее, не завязано на один сайт: если
+// среди совпадений есть хоть одно вне <thead>, совпадения внутри <thead>
+// отбрасываются как заведомо заголовочные.
+function preferTbody($, elements) {
+  const bodyEls = elements.filter((el) => $(el).closest("thead").length === 0);
+  return bodyEls.length > 0 ? bodyEls : elements;
+}
+
 // Максимальная живучесть при разборе: реальные сайты дают неожиданную вложенность,
 // оборванные теги, нестандартные структуры. Одно поле/группа не должны обрушивать
 // разбор всего раздела — каждое читается независимо, ошибка на одном не должна
@@ -146,8 +158,8 @@ function parseSection($, section) {
 
   for (const f of sectionFields(section)) {
     const value = safeExtract(() => {
-      const el = $(`[itemprop="${f.itemprop}"]`).first();
-      return el.length ? extractValue($, el.get(0)) : undefined;
+      const els = preferTbody($, $(`[itemprop="${f.itemprop}"]`).toArray());
+      return els.length ? extractValue($, els[0]) : undefined;
     }, `поле ${f.key}`);
     if (value !== undefined) result.fields[f.key] = value;
   }
@@ -157,14 +169,14 @@ function parseSection($, section) {
     // повторяющийся блок (массив); иначе — одиночный (напр. managers.rucovodstvo).
     const isCollection = typeof g.from === "string" && g.from.endsWith("[]");
     const items = safeExtract(() => {
-      const itemEls = $(`[itemprop="${g.itemprop}"]`).toArray();
+      const itemEls = preferTbody($, $(`[itemprop="${g.itemprop}"]`).toArray());
       return itemEls.map((itemEl, i) =>
         safeExtract(() => {
           const $item = $(itemEl);
           const item = {};
           for (const f of g.fields) {
-            const el = $item.find(`[itemprop="${f.itemprop}"]`).first();
-            if (el.length) item[f.key] = extractValue($, el.get(0));
+            const els = preferTbody($, $item.find(`[itemprop="${f.itemprop}"]`).toArray());
+            if (els.length) item[f.key] = extractValue($, els[0]);
           }
           return item;
         }, `группа ${g.key}[${i}]`) ?? {}
