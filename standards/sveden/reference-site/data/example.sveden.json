@@ -1,0 +1,90 @@
+{
+  "common": {
+    "fields": {
+      "fullName": "Образовательная организация «Пример» (вымышленные данные)",
+      "shortName": "ОО «Пример»",
+      "regDate": "1998-09-01",
+      "address": "г. Примерск, ул. Учебная, д. 1",
+      "workTime": "Пн–Пт 9:00–18:00",
+      "telephone": "+7 (000) 000-00-00",
+      "email": "info@example-oo.test",
+      "licenseDocLink": { "text": "Лицензия на осуществление образовательной деятельности", "href": "/docs/license.pdf" },
+      "addressPlaceDop": "г. Примерск, ул. Учебная, д. 1"
+    },
+    "groups": {
+      "uchredLaw": [
+        {
+          "nameUchred": "Министерство примерного образования",
+          "addressUchred": "г. Примерск, пл. Ведомственная, д. 1",
+          "telUchred": "+7 (000) 000-00-01",
+          "mailUchred": "minobr@example.test",
+          "websiteUchred": "https://minobr.example.test"
+        }
+      ]
+    }
+  },
+  "struct": {
+    "groups": {
+      "structOrgUprav": [
+        {
+          "name": "Кафедра примерных дисциплин",
+          "fio": "Иванова Ирина Ивановна",
+          "post": "Заведующий кафедрой",
+          "addressStr": "г. Примерск, ул. Учебная, д. 1",
+          "site": "https://example-oo.test",
+          "email": "kafedra@example-oo.test",
+          "doc": { "text": "Положение о кафедре", "href": "/docs/polozhenie-kafedra.pdf" }
+        }
+      ],
+      "filInfo": [],
+      "repInfo": []
+    }
+  },
+  "document": { "fields": {}, "groups": {} },
+  "education": { "fields": {}, "groups": {} },
+  "eduStandarts": { "fields": {}, "groups": {} },
+  "managers": {
+    "groups": {
+      "rucovodstvo": {
+        "fio": "Петров Пётр Петрович",
+        "post": "Ректор",
+        "telephone": "+7 (000) 000-00-02",
+        "email": "rector@example-oo.test"
+      },
+      "rucovodstvoZam": [
+        {
+          "fio": "Сидорова Анна Сергеевна",
+          "post": "Проректор по учебной работе",
+          "telephone": "+7 (000) 000-00-03",
+          "email": "prorector@example-oo.test"
+        }
+      ],
+      "rucovodstvoFil": []
+    }
+  },
+  "employees": {
+    "groups": {
+      "teachingStaff": [
+        {
+          "fio": "Кузнецов Алексей Владимирович",
+          "post": "Доцент",
+          "teachingDiscipline": "История",
+          "teachingLevel": "Высшее образование, специалитет"
+        },
+        {
+          "fio": "Смирнова Ольга Дмитриевна",
+          "post": "Старший преподаватель",
+          "teachingDiscipline": "Иностранный язык",
+          "teachingLevel": "Высшее образование, магистратура"
+        }
+      ]
+    }
+  },
+  "objects": { "fields": { "ovz": "Обеспечен беспрепятственный доступ в учебные корпуса" }, "groups": {} },
+  "grants": { "fields": {}, "groups": {} },
+  "paid_edu": { "fields": {}, "groups": {} },
+  "budget": { "fields": {}, "groups": {} },
+  "vacant": { "groups": { "vacant": [] } },
+  "inter": { "groups": { "internationalDog": [] } },
+  "catering": { "fields": {}, "groups": { "meals": [] } }
+}
