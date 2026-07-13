@@ -17,6 +17,31 @@ import path from "node:path";
 import { load } from "cheerio";
 import { loadVocab, listSectionKeys, sectionFields, sectionGroups } from "../lib/vocab.mjs";
 
+// Немало старых сайтов ОО (в т.ч. реальные вузовские CMS) отдают кириллицу не в
+// UTF-8, а в KOI8-R/windows-1251/cp1251 — и HTTP-заголовок Content-Type при этом
+// часто врёт (наблюдалось: charset=iso-8859-1 по заголовку при фактическом
+// KOI8-R в <meta>). Поэтому кодировку определяем по телу страницы (её
+// декларация всегда в ASCII, читается независимо от реальной кодировки), а
+// заголовок — только запасной вариант.
+function detectCharset(buffer, headerContentType) {
+  const asciiPrefix = buffer.subarray(0, 2048).toString("latin1");
+  const metaMatch = asciiPrefix.match(/<meta[^>]+charset=["']?\s*([\w-]+)/i);
+  if (metaMatch) return metaMatch[1].toLowerCase();
+  const headerMatch = headerContentType?.match(/charset=([\w-]+)/i);
+  if (headerMatch) return headerMatch[1].toLowerCase();
+  return "utf-8";
+}
+
+function decodeHtml(buffer, headerContentType) {
+  const charset = detectCharset(buffer, headerContentType);
+  try {
+    return new TextDecoder(charset).decode(buffer);
+  } catch {
+    console.warn(`  ⚠ неизвестная кодировка "${charset}", читаю как UTF-8`);
+    return new TextDecoder("utf-8").decode(buffer);
+  }
+}
+
 async function fetchHtml(source, sectionKey, sectionUrl) {
   if (/^https?:\/\//.test(source)) {
     const url = new URL(sectionUrl, source).toString();
@@ -25,11 +50,12 @@ async function fetchHtml(source, sectionKey, sectionUrl) {
       console.warn(`  ⚠ ${url}: HTTP ${res.status}`);
       return null;
     }
-    return await res.text();
+    const buffer = Buffer.from(await res.arrayBuffer());
+    return decodeHtml(buffer, res.headers.get("content-type"));
   }
   const file = path.join(source, `${sectionKey}.html`);
   if (!fs.existsSync(file)) return null;
-  return fs.readFileSync(file, "utf8");
+  return decodeHtml(fs.readFileSync(file), null);
 }
 
 // Значение поля: если размечен элемент со ссылкой (сам <a> или содержит <a href>) —
