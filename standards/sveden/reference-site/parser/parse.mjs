@@ -153,7 +153,107 @@ function safeExtract(fn, onErrorLabel) {
   }
 }
 
-function parseSection($, section) {
+function extractItemHref($, itemEl) {
+  const $item = $(itemEl);
+  const tag = itemEl.tagName?.toLowerCase();
+  return tag === "a" ? $item.attr("href") : $item.find("a[href]").first().attr("href");
+}
+
+// --- Запасной путь: страница разбита по ссылкам (orgma.ru/sveden/employees —
+// itemprop стоит не на преподавателе, а на ссылке-программе, реальная таблица
+// преподавателей — на отдельной связанной странице БЕЗ микроразметки вообще).
+// Официальный словарь такого сценария не описывает под конкретные ключевые
+// слова — сопоставление заголовков таблицы с полями группы держим здесь, не
+// в vocab/base.yaml, это эвристика поверх произвольной вёрстки, не часть
+// контракта микроразметки.
+const FIELD_LABEL_KEYWORDS = {
+  fio: [["фио"], ["ф.и.о"], ["фамили", "имя"]],
+  post: [["должност"]],
+  teachingDiscipline: [["дисциплин"], ["предмет"], ["курс"]],
+  teachingLevel: [["уровень", "образован"]],
+  degree: [["учен", "степен"]],
+  academStat: [["учен", "звани"]],
+  qualification: [["повышен", "квалифика"]],
+  profDevelopment: [["переподготов"]],
+  specExperience: [["стаж"], ["опыт", "работ"]],
+  teachingOp: [["образовательных программ"], ["реализац"]],
+};
+
+// Строка "1 | 2 | 3 ..." (нумерация столбцов) или пустая — служебная, не данные.
+function isServiceRow(cellsText) {
+  return cellsText.every((t) => t === "" || /^\d{1,3}$/.test(t));
+}
+
+// Ищет в таблице строку заголовков и пытается сопоставить её ячейки с полями
+// группы по ключевым словам. Возвращает { colIndex → field.key } или null,
+// если совпадений мало (значит это не таблица преподавателей, а что-то ещё).
+function matchTableColumns($, $table, fields) {
+  const headerCells = $table.find("tr").first().find("th, td").toArray()
+    .map((c) => $(c).text().trim().toLowerCase());
+  const columnMap = {};
+  headerCells.forEach((text, colIndex) => {
+    for (const f of fields) {
+      if (Object.values(columnMap).includes(f.key)) continue;
+      const groups = FIELD_LABEL_KEYWORDS[f.key];
+      if (!groups) continue;
+      if (groups.some((kws) => kws.every((kw) => text.includes(kw)))) {
+        columnMap[colIndex] = f.key;
+        break;
+      }
+    }
+  });
+  const matched = Object.values(columnMap);
+  if (!matched.includes("fio") || matched.length < 2) return null;
+  return columnMap;
+}
+
+function findDataTable($, fields) {
+  for (const table of $("table").toArray()) {
+    const columnMap = matchTableColumns($, $(table), fields);
+    if (columnMap) return { table, columnMap };
+  }
+  return null;
+}
+
+function extractTableRows($, table, columnMap) {
+  const rows = $(table).find("tr").toArray();
+  const records = [];
+  // rows[0] — уже опознанная строка заголовков, данные начинаются с rows[1].
+  for (const row of rows.slice(1)) {
+    const cellsText = $(row).find("th, td").toArray()
+      .map((c) => $(c).text().trim().replace(/[ \t]*\n[ \t]*/g, "\n").replace(/[ \t]{2,}/g, " "));
+    if (!cellsText.length || isServiceRow(cellsText)) continue;
+    const record = {};
+    for (const [idx, key] of Object.entries(columnMap)) {
+      const val = cellsText[Number(idx)];
+      if (val) record[key] = val;
+    }
+    if (record.fio) records.push(record);
+  }
+  return records;
+}
+
+// Переходит по ссылкам, которые остались без полей при разборе по itemprop
+// (пустые элементы группы — сама ссылка на подстраницу, не данные), и на
+// каждой связанной странице пытается найти и распознать таблицу нужной формы.
+async function followEmptyGroupLinks(groupKey, fields, hrefs, baseUrl) {
+  const collected = [];
+  const capped = hrefs.slice(0, 30);
+  if (hrefs.length > capped.length) {
+    console.warn(`  ⚠ ${groupKey}: ссылок больше 30 (${hrefs.length}) — беру первые 30`);
+  }
+  for (const href of capped) {
+    const url = new URL(href, baseUrl).toString();
+    const attempt = await fetchOnce(url, 10_000);
+    if (!attempt.ok) continue;
+    const $$ = load(attempt.html);
+    const found = findDataTable($$, fields);
+    if (found) collected.push(...extractTableRows($$, found.table, found.columnMap));
+  }
+  return collected;
+}
+
+async function parseSection($, section, baseUrl) {
   const result = { fields: {}, groups: {} };
 
   for (const f of sectionFields(section)) {
@@ -168,6 +268,7 @@ function parseSection($, section) {
     // Соглашение словаря (base.yaml, шапка файла): from оканчивается на "[]" —
     // повторяющийся блок (массив); иначе — одиночный (напр. managers.rucovodstvo).
     const isCollection = typeof g.from === "string" && g.from.endsWith("[]");
+    const emptyItemHrefs = [];
     const items = safeExtract(() => {
       const itemEls = preferTbody($, $(`[itemprop="${g.itemprop}"]`).toArray());
       return itemEls.map((itemEl, i) =>
@@ -178,14 +279,41 @@ function parseSection($, section) {
             const els = preferTbody($, $item.find(`[itemprop="${f.itemprop}"]`).toArray());
             if (els.length) item[f.key] = extractValue($, els[0]);
           }
+          if (Object.keys(item).length === 0) {
+            const href = extractItemHref($, itemEl);
+            if (href) emptyItemHrefs.push(href);
+          }
           return item;
         }, `группа ${g.key}[${i}]`) ?? {}
       );
     }, `группа ${g.key}`) ?? [];
     result.groups[g.key] = isCollection ? items : (items[0] ?? null);
+
+    // Запасной путь только когда прямое чтение вообще ничего не дало (а не
+    // просто часть элементов) — при частичном успехе доверяем основным данным
+    // и не рискуем подменять их эвристикой по заголовкам таблиц.
+    if (baseUrl && emptyItemHrefs.length && items.every((it) => Object.keys(it).length === 0)) {
+      const found = await safeExtractAsync(
+        () => followEmptyGroupLinks(g.key, g.fields, emptyItemHrefs, baseUrl),
+        `группа ${g.key} (переход по ссылкам)`,
+      );
+      if (found?.length) {
+        console.warn(`  ✓ ${g.key}: найдено ${found.length} строк на связанных страницах (без itemprop)`);
+        result.groups[g.key] = isCollection ? found : found[0];
+      }
+    }
   }
 
   return result;
+}
+
+async function safeExtractAsync(fn, onErrorLabel) {
+  try {
+    return await fn();
+  } catch (err) {
+    console.warn(`  ⚠ ${onErrorLabel}: ${err.message}`);
+    return undefined;
+  }
 }
 
 async function main() {
@@ -226,7 +354,8 @@ async function main() {
         continue;
       }
       const $ = load(html);
-      data[key] = parseSection($, section);
+      const baseUrl = /^https?:\/\//.test(source) ? new URL(section.url, source).toString() : null;
+      data[key] = await parseSection($, section, baseUrl);
     } catch (err) {
       console.warn(`  ⚠ ${key}: пропущен — неожиданная ошибка: ${err.message}`);
       skipped.push({ key, reason: `неожиданная ошибка: ${err.message}` });
