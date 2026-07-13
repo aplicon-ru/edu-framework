@@ -42,20 +42,78 @@ function decodeHtml(buffer, headerContentType) {
   }
 }
 
-async function fetchHtml(source, sectionKey, sectionUrl) {
+// Один сетевой запрос, с таймаутом (по умолчанию агрессивные таймауты fetch на
+// старых/перегруженных серверах вузов дают ложный "недоступен" раньше времени).
+async function fetchOnce(url, timeoutMs) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { signal: controller.signal, redirect: "follow" });
+    if (!res.ok) return { ok: false, reason: `HTTP ${res.status}` };
+    const buffer = Buffer.from(await res.arrayBuffer());
+    return { ok: true, html: decodeHtml(buffer, res.headers.get("content-type")) };
+  } catch (err) {
+    const reason = err.name === "AbortError" ? `таймаут ${timeoutMs}мс` : err.cause?.message || err.message;
+    return { ok: false, reason };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// Провал уровня соединения (таймаут/сброс/DNS) отличаем от HTTP-статуса: статус
+// (даже 404/403) означает, что сервер вообще отвечает — а вот таймаут/обрыв на
+// первом же разделе — сильный сигнал, что недоступен весь хост целиком, а не
+// одна страница.
+function isConnectionLevelFailure(reason) {
+  return typeof reason === "string" && !reason.startsWith("HTTP ");
+}
+
+// Максимальная живучесть по сети: короткая попытка → более долгий повтор →
+// если и HTTPS полностью недоступен (не просто TLS-нюанс, а обрыв/таймаут
+// соединения) — пробуем HTTP тем же путём (реальный случай: старые вузовские
+// сайты нередко держат рабочий HTTP при сломанном/медленном HTTPS).
+//
+// fastMode — включается после того, как на ПРЕДЫДУЩЕМ разделе весь хост уже
+// не ответил ни по HTTPS, ни по HTTP: тратить по 45с полной лестницы на каждый
+// из оставшихся 13 разделов бессмысленно — раз в разделах остаётся шанс, что
+// именно этот путь на сайте всё же жив, делаем одну короткую попытку вместо
+// полного повтора.
+async function fetchWithFallback(url, fastMode) {
+  if (fastMode) {
+    return fetchOnce(url, 6_000);
+  }
+
+  let attempt = await fetchOnce(url, 10_000);
+  if (attempt.ok) return attempt;
+
+  attempt = await fetchOnce(url, 20_000);
+  if (attempt.ok) return attempt;
+
+  if (url.startsWith("https://")) {
+    const httpUrl = "http://" + url.slice("https://".length);
+    const httpAttempt = await fetchOnce(httpUrl, 15_000);
+    if (httpAttempt.ok) return httpAttempt;
+    return { ok: false, reason: `${attempt.reason} (https); ${httpAttempt.reason} (http)` };
+  }
+  return attempt;
+}
+
+async function fetchHtml(source, sectionKey, sectionUrl, fastMode) {
   if (/^https?:\/\//.test(source)) {
     const url = new URL(sectionUrl, source).toString();
-    const res = await fetch(url);
-    if (!res.ok) {
-      console.warn(`  ⚠ ${url}: HTTP ${res.status}`);
-      return null;
+    const result = await fetchWithFallback(url, fastMode);
+    if (!result.ok) {
+      return { html: null, reason: result.reason, connectionLevel: isConnectionLevelFailure(result.reason) };
     }
-    const buffer = Buffer.from(await res.arrayBuffer());
-    return decodeHtml(buffer, res.headers.get("content-type"));
+    return { html: result.html, reason: null, connectionLevel: false };
   }
   const file = path.join(source, `${sectionKey}.html`);
-  if (!fs.existsSync(file)) return null;
-  return decodeHtml(fs.readFileSync(file), null);
+  if (!fs.existsSync(file)) return { html: null, reason: "файл не найден", connectionLevel: false };
+  try {
+    return { html: decodeHtml(fs.readFileSync(file), null), reason: null, connectionLevel: false };
+  } catch (err) {
+    return { html: null, reason: err.message, connectionLevel: false };
+  }
 }
 
 // Значение поля: если размечен элемент со ссылкой (сам <a> или содержит <a href>) —
@@ -70,28 +128,48 @@ function extractValue($, el) {
   return text || null;
 }
 
+// Максимальная живучесть при разборе: реальные сайты дают неожиданную вложенность,
+// оборванные теги, нестандартные структуры. Одно поле/группа не должны обрушивать
+// разбор всего раздела — каждое читается независимо, ошибка на одном не должна
+// стоить остальных уже извлечённых значений.
+function safeExtract(fn, onErrorLabel) {
+  try {
+    return fn();
+  } catch (err) {
+    console.warn(`  ⚠ ${onErrorLabel}: ${err.message}`);
+    return undefined;
+  }
+}
+
 function parseSection($, section) {
   const result = { fields: {}, groups: {} };
 
   for (const f of sectionFields(section)) {
-    const el = $(`[itemprop="${f.itemprop}"]`).first();
-    if (el.length) result.fields[f.key] = extractValue($, el.get(0));
+    const value = safeExtract(() => {
+      const el = $(`[itemprop="${f.itemprop}"]`).first();
+      return el.length ? extractValue($, el.get(0)) : undefined;
+    }, `поле ${f.key}`);
+    if (value !== undefined) result.fields[f.key] = value;
   }
 
   for (const g of sectionGroups(section)) {
     // Соглашение словаря (base.yaml, шапка файла): from оканчивается на "[]" —
     // повторяющийся блок (массив); иначе — одиночный (напр. managers.rucovodstvo).
     const isCollection = typeof g.from === "string" && g.from.endsWith("[]");
-    const itemEls = $(`[itemprop="${g.itemprop}"]`).toArray();
-    const items = itemEls.map((itemEl) => {
-      const $item = $(itemEl);
-      const item = {};
-      for (const f of g.fields) {
-        const el = $item.find(`[itemprop="${f.itemprop}"]`).first();
-        if (el.length) item[f.key] = extractValue($, el.get(0));
-      }
-      return item;
-    });
+    const items = safeExtract(() => {
+      const itemEls = $(`[itemprop="${g.itemprop}"]`).toArray();
+      return itemEls.map((itemEl, i) =>
+        safeExtract(() => {
+          const $item = $(itemEl);
+          const item = {};
+          for (const f of g.fields) {
+            const el = $item.find(`[itemprop="${f.itemprop}"]`).first();
+            if (el.length) item[f.key] = extractValue($, el.get(0));
+          }
+          return item;
+        }, `группа ${g.key}[${i}]`) ?? {}
+      );
+    }, `группа ${g.key}`) ?? [];
     result.groups[g.key] = isCollection ? items : (items[0] ?? null);
   }
 
@@ -110,29 +188,56 @@ async function main() {
   const vocab = loadVocab();
   const data = {};
   const skipped = [];
+  const outPath = outArg ?? "data/parsed.sveden.json";
+
+  // Каждый раздел — независимая попытка. Сбой одного (сеть, разметка, что угодно)
+  // не должен стоить уже собранных остальных 13 — ни разу не даём исключению
+  // выйти из тела цикла наружу.
+  //
+  // hostSuspectedDown: если на каком-то разделе не ответили ни HTTPS, ни HTTP
+  // (полный обрыв соединения, не HTTP-статус) — весь хост, скорее всего, лежит
+  // целиком. Дальше не тратим полную лестницу повторов (~45с) на каждый из
+  // оставшихся разделов, а быстро проверяем каждый по одной короткой попытке.
+  let hostSuspectedDown = false;
 
   for (const key of listSectionKeys()) {
-    const section = vocab[key];
-    const html = await fetchHtml(source, key, section.url);
-    if (!html) {
-      skipped.push(key);
-      continue;
+    try {
+      const section = vocab[key];
+      const { html, reason, connectionLevel } = await fetchHtml(source, key, section.url, hostSuspectedDown);
+      if (!html) {
+        console.warn(`  ⚠ ${key}: пропущен — ${reason}`);
+        skipped.push({ key, reason });
+        if (connectionLevel && !hostSuspectedDown) {
+          hostSuspectedDown = true;
+          console.warn("  ⚠ хост не отвечает ни по HTTPS, ни по HTTP — дальше проверяю разделы в быстром режиме");
+        }
+        continue;
+      }
+      const $ = load(html);
+      data[key] = parseSection($, section);
+    } catch (err) {
+      console.warn(`  ⚠ ${key}: пропущен — неожиданная ошибка: ${err.message}`);
+      skipped.push({ key, reason: `неожиданная ошибка: ${err.message}` });
     }
-    const $ = load(html);
-    data[key] = parseSection($, section);
   }
 
-  const outPath = outArg ?? "data/parsed.sveden.json";
+  // Пишем результат в любом случае — даже 1 успешный раздел из 14 лучше,
+  // чем ничего из-за одного сбойного.
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify(data, null, 2) + "\n", "utf8");
 
   console.log(`Разобрано разделов: ${Object.keys(data).length}/${listSectionKeys().length} → ${outPath}`);
   if (skipped.length) {
-    console.log(`Пропущено (страница не найдена): ${skipped.join(", ")}`);
+    console.log("Пропущено:");
+    for (const { key, reason } of skipped) {
+      console.log(`  ${key}: ${reason}`);
+    }
   }
 }
 
 main().catch((err) => {
-  console.error(err);
+  // Сюда мы дойти не должны (см. try/catch в цикле выше) — если всё же дошли,
+  // это ошибка до начала разбора (например, битый словарь), а не сайта.
+  console.error("Ошибка до начала разбора разделов:", err);
   process.exit(1);
 });
