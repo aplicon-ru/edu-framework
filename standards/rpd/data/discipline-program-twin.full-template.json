@@ -267,7 +267,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_from_reference",
-        "sourcePath": "department.employees",
+        "sourcePath": "/department/employees",
         "note": "Закрепляется заведующим кафедрой"
       },
       "presentation": {
@@ -338,7 +338,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.professionalModule.name"
+        "sourcePath": "/curriculum/professionalModule/name"
       },
       "presentation": {
         "formLabel": "Наименование профессионального модуля",
@@ -366,7 +366,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.disciplineOrInterdisciplinaryCourse.name"
+        "sourcePath": "/curriculum/disciplineOrInterdisciplinaryCourse/name"
       },
       "presentation": {
         "formLabel": "Наименование дисциплины / междисциплинарного курса",
@@ -399,7 +399,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.name"
+        "sourcePath": "/curriculum/discipline/name"
       },
       "presentation": {
         "formLabel": "Наименование дисциплины (модуля)",
@@ -427,7 +427,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.additionalEducationalProgram.name"
+        "sourcePath": "/curriculum/additionalEducationalProgram/name"
       },
       "presentation": {
         "formLabel": "Наименование дополнительной образовательной программы",
@@ -455,7 +455,7 @@
       "source": {
         "sourceType": "typicalProgram",
         "fillMode": "derived",
-        "sourcePath": "typicalProgram.name"
+        "sourcePath": "/typicalProgram/name"
       },
       "presentation": {
         "formLabel": "Наименование дополнительной профессиональной программы по специальности",
@@ -483,7 +483,7 @@
       "source": {
         "sourceType": "typicalProgram",
         "fillMode": "derived",
-        "sourcePath": "typicalProgram.educationForm"
+        "sourcePath": "/typicalProgram/educationForm"
       },
       "presentation": {
         "formLabel": "Форма обучения",
@@ -517,7 +517,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.lectureHours"
+        "sourcePath": "/curriculum/discipline/workload/lectureHours"
       },
       "presentation": {
         "formLabel": "Лекционные занятия",
@@ -545,7 +545,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.lecturesWithElearningAndDotHours"
+        "sourcePath": "/curriculum/discipline/workload/lecturesWithElearningAndDotHours"
       },
       "presentation": {
         "formLabel": "Лекции (с использованием ЭО и ДОТ)",
@@ -580,7 +580,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.practicalHours"
+        "sourcePath": "/curriculum/discipline/workload/practicalHours"
       },
       "presentation": {
         "formLabel": "Практические занятия",
@@ -614,7 +614,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.laboratoryHours"
+        "sourcePath": "/curriculum/discipline/workload/laboratoryHours"
       },
       "presentation": {
         "formLabel": "Лабораторные занятия",
@@ -648,7 +648,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.seminarHours"
+        "sourcePath": "/curriculum/discipline/workload/seminarHours"
       },
       "presentation": {
         "formLabel": "Семинарские занятия",
@@ -676,7 +676,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.consultationHours"
+        "sourcePath": "/curriculum/discipline/workload/consultationHours"
       },
       "presentation": {
         "formLabel": "Консультации",
@@ -709,7 +709,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.independentWorkControlHours"
+        "sourcePath": "/curriculum/discipline/workload/independentWorkControlHours"
       },
       "presentation": {
         "formLabel": "Контроль самостоятельной работы (КСР)",
@@ -742,7 +742,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.attestationCurrentPeriodContactHours"
+        "sourcePath": "/curriculum/discipline/workload/attestationCurrentPeriodContactHours"
       },
       "presentation": {
         "formLabel": "Контактная работа на аттестацию в период ТО (АтТО)",
@@ -775,7 +775,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.attestationExamSessionAndGiaContactHours"
+        "sourcePath": "/curriculum/discipline/workload/attestationExamSessionAndGiaContactHours"
       },
       "presentation": {
         "formLabel": "Контактная работа на аттестацию в период экз. сессии и ГИА (ЭкГИА)",
@@ -809,7 +809,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.selfStudyHours"
+        "sourcePath": "/curriculum/discipline/workload/selfStudyHours"
       },
       "presentation": {
         "formLabel": "Самостоятельная работа",
@@ -842,7 +842,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.examSessionSelfStudyControlHours"
+        "sourcePath": "/curriculum/discipline/workload/examSessionSelfStudyControlHours"
       },
       "presentation": {
         "formLabel": "Контроль (самостоятельная работа в период экз. сессии)",
@@ -875,7 +875,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.practiceContactHours"
+        "sourcePath": "/curriculum/discipline/workload/practiceContactHours"
       },
       "presentation": {
         "formLabel": "Контактные часы на практику (КчП)",
@@ -908,7 +908,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.practiceReportPreparationHours"
+        "sourcePath": "/curriculum/discipline/workload/practiceReportPreparationHours"
       },
       "presentation": {
         "formLabel": "Оформление отчетности по практике (ОП)",
@@ -937,7 +937,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.practiceHours"
+        "sourcePath": "/curriculum/discipline/workload/practiceHours"
       },
       "presentation": {
         "formLabel": "Практика",
@@ -966,7 +966,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.attestationHours"
+        "sourcePath": "/curriculum/discipline/workload/attestationHours"
       },
       "presentation": {
         "formLabel": "Аттестация",
@@ -1001,7 +1001,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.totalHours"
+        "sourcePath": "/curriculum/discipline/workload/totalHours"
       },
       "presentation": {
         "formLabel": "ИТОГО в часах",
@@ -1035,7 +1035,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.workload.totalCredits"
+        "sourcePath": "/curriculum/discipline/workload/totalCredits"
       },
       "presentation": {
         "formLabel": "ИТОГО в ЗЕ",
@@ -1070,7 +1070,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.controlForms"
+        "sourcePath": "/curriculum/discipline/controlForms"
       },
       "presentation": {
         "formLabel": "Форма контроля",
@@ -1103,7 +1103,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.controlForms"
+        "sourcePath": "/curriculum/discipline/controlForms"
       },
       "presentation": {
         "formLabel": "Экзамен",
@@ -1136,7 +1136,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.controlForms"
+        "sourcePath": "/curriculum/discipline/controlForms"
       },
       "presentation": {
         "formLabel": "Зачет",
@@ -1162,7 +1162,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.controlForms"
+        "sourcePath": "/curriculum/discipline/controlForms"
       },
       "presentation": {
         "formLabel": "Зачет с оценкой",
@@ -1191,7 +1191,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.controlForms"
+        "sourcePath": "/curriculum/discipline/controlForms"
       },
       "presentation": {
         "formLabel": "Курсовая работа",
@@ -1224,7 +1224,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.controlForms"
+        "sourcePath": "/curriculum/discipline/controlForms"
       },
       "presentation": {
         "formLabel": "№ семестра / триместра",
@@ -1257,7 +1257,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.controlForms"
+        "sourcePath": "/curriculum/discipline/controlForms"
       },
       "presentation": {
         "formLabel": "№ модуля",
@@ -1290,7 +1290,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.controlForms"
+        "sourcePath": "/curriculum/discipline/controlForms"
       },
       "presentation": {
         "formLabel": "Комплексный экзамен",
@@ -1323,7 +1323,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.controlForms"
+        "sourcePath": "/curriculum/discipline/controlForms"
       },
       "presentation": {
         "formLabel": "Комплексный зачет",
@@ -1356,7 +1356,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.controlForms"
+        "sourcePath": "/curriculum/discipline/controlForms"
       },
       "presentation": {
         "formLabel": "Комплексный зачет с оценкой",
@@ -1389,7 +1389,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.controlForms"
+        "sourcePath": "/curriculum/discipline/controlForms"
       },
       "presentation": {
         "formLabel": "Квалификационный экзамен",
@@ -1490,7 +1490,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "select_or_derived",
-        "sourcePath": "curriculum.discipline.interdisciplinaryLinks"
+        "sourcePath": "/curriculum/discipline/interdisciplinaryLinks"
       },
       "presentation": {
         "formLabel": "Межпредметные связи",
@@ -1523,7 +1523,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_from_reference",
-        "sourcePath": "curriculum.disciplines",
+        "sourcePath": "/curriculum/disciplines",
         "note": "Ограничение: только текущий и предыдущие курсы"
       },
       "presentation": {
@@ -1557,7 +1557,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_from_reference",
-        "sourcePath": "curriculum.practices",
+        "sourcePath": "/curriculum/practices",
         "note": "Ограничение: только текущий и предыдущие курсы"
       },
       "presentation": {
@@ -1623,7 +1623,7 @@
       "source": {
         "sourceType": "opop",
         "fillMode": "derived_or_manual",
-        "sourcePath": "opop.competenceMatrix"
+        "sourcePath": "/opop/competenceMatrix"
       },
       "presentation": {
         "formLabel": "Компетенции / результаты обучения",
@@ -1656,7 +1656,7 @@
       "source": {
         "sourceType": "opop",
         "fillMode": "derived_or_select",
-        "sourcePath": "opop.competenceMatrix.competency.code"
+        "sourcePath": "/opop/competenceMatrix/competency/code"
       },
       "presentation": {
         "formLabel": "Индекс / код",
@@ -1689,7 +1689,7 @@
       "source": {
         "sourceType": "opop",
         "fillMode": "derived_or_select",
-        "sourcePath": "opop.competenceMatrix.competency.name"
+        "sourcePath": "/opop/competenceMatrix/competency/name"
       },
       "presentation": {
         "formLabel": "Наименование компетенции",
@@ -1722,7 +1722,7 @@
       "source": {
         "sourceType": "opop",
         "fillMode": "derived_or_select",
-        "sourcePath": "opop.competenceMatrix.indicators"
+        "sourcePath": "/opop/competenceMatrix/indicators"
       },
       "presentation": {
         "formLabel": "Индикатор",
@@ -1755,7 +1755,7 @@
       "source": {
         "sourceType": "manual_or_program",
         "fillMode": "manual_or_derived",
-        "sourcePath": "disciplineProgram.learningOutcomes"
+        "sourcePath": "/disciplineProgram/learningOutcomes"
       },
       "presentation": {
         "formLabel": "Знать",
@@ -1788,7 +1788,7 @@
       "source": {
         "sourceType": "manual_or_program",
         "fillMode": "manual_or_derived",
-        "sourcePath": "disciplineProgram.learningOutcomes"
+        "sourcePath": "/disciplineProgram/learningOutcomes"
       },
       "presentation": {
         "formLabel": "Уметь",
@@ -1821,7 +1821,7 @@
       "source": {
         "sourceType": "manual_or_program",
         "fillMode": "manual_or_derived",
-        "sourcePath": "disciplineProgram.learningOutcomes"
+        "sourcePath": "/disciplineProgram/learningOutcomes"
       },
       "presentation": {
         "formLabel": "Владеть",
@@ -1854,7 +1854,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_from_reference",
-        "sourcePath": "controlForms"
+        "sourcePath": "/controlForms"
       },
       "presentation": {
         "formLabel": "Формы контроля",
@@ -1887,7 +1887,7 @@
       "source": {
         "sourceType": "external",
         "fillMode": "link",
-        "sourcePath": "assessmentMaterials.testBank"
+        "sourcePath": "/assessmentMaterials/testBank"
       },
       "presentation": {
         "formLabel": "Материалы для оценки результатов освоения программы",
@@ -1920,7 +1920,7 @@
       "source": {
         "sourceType": "external",
         "fillMode": "link",
-        "sourcePath": "assessmentMaterials.testBank"
+        "sourcePath": "/assessmentMaterials/testBank"
       },
       "presentation": {
         "formLabel": "Материалы для оценки планируемых результатов обучения",
@@ -1985,7 +1985,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived_or_manual",
-        "sourcePath": "curriculum.discipline.periods"
+        "sourcePath": "/curriculum/discipline/periods"
       },
       "presentation": {
         "formLabel": "Период обучения",
@@ -2018,7 +2018,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived",
-        "sourcePath": "curriculum.discipline.period.number"
+        "sourcePath": "/curriculum/discipline/period/number"
       },
       "presentation": {
         "formLabel": "№ семестра / триместра",
@@ -2051,7 +2051,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived_or_manual",
-        "sourcePath": "curriculum.discipline.module.number"
+        "sourcePath": "/curriculum/discipline/module/number"
       },
       "presentation": {
         "formLabel": "№ модуля",
@@ -2084,7 +2084,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "derived_or_manual",
-        "sourcePath": "curriculum.discipline.module.name"
+        "sourcePath": "/curriculum/discipline/module/name"
       },
       "presentation": {
         "formLabel": "Наименование модуля / дисциплины / междисциплинарного курса",
@@ -2213,7 +2213,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_from_reference",
-        "sourcePath": "lessonTypes"
+        "sourcePath": "/lessonTypes"
       },
       "presentation": {
         "formLabel": "Вид занятия",
@@ -2246,7 +2246,7 @@
       "source": {
         "sourceType": "manual_or_curriculum",
         "fillMode": "manual_or_derived",
-        "sourcePath": "curriculum.discipline.lesson.contactHours"
+        "sourcePath": "/curriculum/discipline/lesson/contactHours"
       },
       "presentation": {
         "formLabel": "Контактная работа в часах",
@@ -2311,7 +2311,7 @@
       "source": {
         "sourceType": "curriculum",
         "fillMode": "manual",
-        "sourcePath": "curriculum.disciplineOrModule"
+        "sourcePath": "/curriculum/disciplineOrModule"
       },
       "presentation": {
         "formLabel": "Дисциплина / модуль",
@@ -2344,7 +2344,7 @@
       "source": {
         "sourceType": "content",
         "fillMode": "manual",
-        "sourcePath": "content.thematicPlan.periods[].modules[].topics[]"
+        "sourcePath": "/content/thematicPlan/periods/items/modules/items/topics/items"
       },
       "presentation": {
         "formLabel": "Тема занятия",
@@ -2473,7 +2473,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_or_manual",
-        "sourcePath": "lessonTypes"
+        "sourcePath": "/lessonTypes"
       },
       "presentation": {
         "formLabel": "Вид занятия",
@@ -2570,7 +2570,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_or_manual",
-        "sourcePath": "teachingMethods"
+        "sourcePath": "/teachingMethods"
       },
       "presentation": {
         "formLabel": "Методы обучения",
@@ -2603,7 +2603,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_or_manual",
-        "sourcePath": "teachingMeans"
+        "sourcePath": "/teachingMeans"
       },
       "presentation": {
         "formLabel": "Средства обучения",
@@ -2636,7 +2636,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_or_manual",
-        "sourcePath": "controlForms"
+        "sourcePath": "/controlForms"
       },
       "presentation": {
         "formLabel": "Форма контроля",
@@ -2669,7 +2669,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_or_manual",
-        "sourcePath": "content.learningOutcomes.competencies"
+        "sourcePath": "/content/learningOutcomes/competencies"
       },
       "presentation": {
         "formLabel": "Формируемые компетенции",
@@ -2702,7 +2702,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_or_manual",
-        "sourcePath": "content.learningOutcomes"
+        "sourcePath": "/content/learningOutcomes"
       },
       "presentation": {
         "formLabel": "Соотнесение с требованиями к результатам освоения",
@@ -2767,7 +2767,7 @@
       "source": {
         "sourceType": "manual_or_reference",
         "fillMode": "select_or_manual",
-        "sourcePath": "library.catalog"
+        "sourcePath": "/library/catalog"
       },
       "presentation": {
         "formLabel": "Список литературы",
@@ -2800,7 +2800,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_from_reference",
-        "sourcePath": "library.catalog.main"
+        "sourcePath": "/library/catalog/main"
       },
       "presentation": {
         "formLabel": "Основная литература",
@@ -2833,7 +2833,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_from_reference",
-        "sourcePath": "library.catalog.additional"
+        "sourcePath": "/library/catalog/additional"
       },
       "presentation": {
         "formLabel": "Дополнительная литература",
@@ -2866,7 +2866,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_or_default",
-        "sourcePath": "softwareRegistry"
+        "sourcePath": "/softwareRegistry"
       },
       "presentation": {
         "formLabel": "Программное обеспечение",
@@ -2899,7 +2899,7 @@
       "source": {
         "sourceType": "reference",
         "fillMode": "select_or_default",
-        "sourcePath": "electronicResourcesRegistry"
+        "sourcePath": "/electronicResourcesRegistry"
       },
       "presentation": {
         "formLabel": "Электронно-библиотечные системы, профессиональные базы данных и информационные справочные системы",
@@ -2932,7 +2932,7 @@
       "source": {
         "sourceType": "classroomFund",
         "fillMode": "derived",
-        "sourcePath": "classroomFund"
+        "sourcePath": "/classroomFund"
       },
       "presentation": {
         "formLabel": "Материально-техническое обеспечение",
@@ -2965,7 +2965,7 @@
       "source": {
         "sourceType": "classroomFund",
         "fillMode": "derived",
-        "sourcePath": "classroomFund.rooms[].address"
+        "sourcePath": "/classroomFund/rooms/items/address"
       },
       "presentation": {
         "formLabel": "Адрес помещения",
@@ -2998,7 +2998,7 @@
       "source": {
         "sourceType": "classroomFund",
         "fillMode": "derived",
-        "sourcePath": "classroomFund.rooms[].roomNumber"
+        "sourcePath": "/classroomFund/rooms/items/roomNumber"
       },
       "presentation": {
         "formLabel": "№ помещения",
@@ -3031,7 +3031,7 @@
       "source": {
         "sourceType": "classroomFund",
         "fillMode": "derived",
-        "sourcePath": "classroomFund.rooms[].roomType"
+        "sourcePath": "/classroomFund/rooms/items/roomType"
       },
       "presentation": {
         "formLabel": "Тип помещения",
@@ -3064,7 +3064,7 @@
       "source": {
         "sourceType": "classroomFund",
         "fillMode": "derived",
-        "sourcePath": "classroomFund.rooms[].roomKind"
+        "sourcePath": "/classroomFund/rooms/items/roomKind"
       },
       "presentation": {
         "formLabel": "Вид помещения",
@@ -3097,7 +3097,7 @@
       "source": {
         "sourceType": "classroomFund",
         "fillMode": "derived",
-        "sourcePath": "classroomFund.rooms[].equipment"
+        "sourcePath": "/classroomFund/rooms/items/equipment"
       },
       "presentation": {
         "formLabel": "Оснащение помещения",
@@ -3130,7 +3130,7 @@
       "source": {
         "sourceType": "contracts",
         "fillMode": "select_or_derived",
-        "sourcePath": "contracts.clinicalBases"
+        "sourcePath": "/contracts/clinicalBases"
       },
       "presentation": {
         "formLabel": "Клиническая база на основании договора",
@@ -3163,7 +3163,7 @@
       "source": {
         "sourceType": "template_or_manual",
         "fillMode": "template_or_manual",
-        "sourcePath": "templates.practicalTraining.medicalOrganizations"
+        "sourcePath": "/templates/practicalTraining/medicalOrganizations"
       },
       "presentation": {
         "formLabel": "Практическая подготовка в медицинских организациях",
@@ -3196,7 +3196,7 @@
       "source": {
         "sourceType": "template_or_manual",
         "fillMode": "template_or_manual",
-        "sourcePath": "templates.practicalTraining.pharmaceuticalOrganizations"
+        "sourcePath": "/templates/practicalTraining/pharmaceuticalOrganizations"
       },
       "presentation": {
         "formLabel": "Практическая подготовка в фармацевтических организациях",
@@ -7268,7 +7268,14 @@
   },
   "relations": {
     "description": "Связи реквизитов Двойника с ФГОС, ОПОП, учебным планом, компетентностной матрицей, справочниками, аудиториями и печатными фрагментами.",
-    "links": []
+    "links": [
+      {
+        "from": "/content/generalCharacteristics/workload/totalCredits",
+        "to": "standards/fgos/data/FGOS-VO-44.03.04-2017.json#/program/volume_credits",
+        "relationType": "dependsOn",
+        "comment": "Итоговая трудоёмкость дисциплины (в з.е.) — компонент общего объёма программы по ФГОС (program.volume_credits, 240 з.е. для этого направления); значение не копируется из ФГОС, а лишь ограничено им — обеспечивает содержательность crossField/range-проверки суммы трудоёмкостей учебного плана против объёма ФГОС (см. consistency.learningOutcomes.assessment по аналогии, validationRules раздела content). Первый живой пример relationLink на реальных данных standards/fgos — ранее ни разу не заполнялся (см. CHANGELOG)."
+      }
+    ]
   },
   "audit": {
     "createdBy": null,
