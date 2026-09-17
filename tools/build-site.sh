@@ -13,5 +13,6 @@ cp -r standards docs/standards
 cp -r implementations docs/implementations
 cp README.md docs/README.md
 cp CLAUDE.md docs/CLAUDE.md
+cp -r assets docs/assets
 
 mkdocs build

@@ -6,6 +6,10 @@ repo_url: https://github.com/aplicon-ru/edu-framework
 repo_name: aplicon-ru/edu-framework
 edit_uri: edit/main/
 
+# Счётчик Яндекс.Метрики (файл копируется в docs/ из assets/ сборкой)
+extra_javascript:
+  - assets/metrika.js
+
 theme:
   name: material
   language: ru
