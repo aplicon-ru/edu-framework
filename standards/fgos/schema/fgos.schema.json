@@ -43,6 +43,7 @@
             "specialist",
             "master",
             "postgraduate",
+            "residency",
             "spo_base",
             "spo_advanced"
           ],
@@ -51,6 +52,7 @@
             "Специалитет",
             "Магистратура",
             "Аспирантура / адъюнктура",
+            "Ординатура (подготовка кадров высшей квалификации)",
             "СПО: подготовка квалифицированных рабочих",
             "СПО: подготовка специалистов среднего звена"
           ]
@@ -75,9 +77,9 @@
           "description": "Дата приказа"
         },
         "effective_date": {
-          "type": "string",
+          "type": ["string", "null"],
           "format": "date",
-          "description": "Дата вступления в силу"
+          "description": "Дата вступления в силу (null, если в тексте приказа не названа явной датой)"
         },
         "version": {
           "type": "string",
@@ -103,8 +105,8 @@
       "required": ["qualification", "duration_years", "volume_credits"],
       "properties": {
         "qualification": {
-          "type": "string",
-          "description": "Квалификация (степень) выпускника",
+          "type": ["string", "null"],
+          "description": "Квалификация (степень) выпускника (null, если в тексте стандарта не указана)",
           "examples": ["Бакалавр", "Специалист", "Магистр", "Исследователь. Преподаватель-исследователь"]
         },
         "forms": {
