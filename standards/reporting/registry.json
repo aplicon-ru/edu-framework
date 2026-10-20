@@ -2502,7 +2502,10 @@
         "status": "primary",
         "note": "primary"
       },
-      "format_sources": "Паспорт 2 экз. на бумаге: подписи и грифы, листы согласования с тремя органами и утверждение (печать организации), нумерация экземпляров («Экз. №»), пометка о служебной информации ограниченного распространения; в 1С печатная форма должна воспроизводить структуру формы из приложения (разделы форма-текст) и лист изменений."
+      "format_sources": [
+        "https://www.zakonrf.info/postanovlenie-pravitelstvo-rf-1421-07112019/",
+        "https://legalacts.ru/doc/postanovlenie-pravitelstva-rf-ot-07112019-n-1421-ob-utverzhdenii/"
+      ]
     },
     {
       "id": "REL-ANTITERROR-PROSV",
