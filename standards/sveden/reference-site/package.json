@@ -1,0 +1,22 @@
+{
+  "name": "sveden-reference-site",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Эталонная реализация раздела /sveden/ на Next.js: рендерер и парсер, управляемые словарём standards/sveden/vocab/base.yaml",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "parse": "node parser/parse.mjs"
+  },
+  "dependencies": {
+    "next": "^15.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0",
+    "js-yaml": "^4.1.0"
+  }
+}

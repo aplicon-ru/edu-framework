@@ -26,6 +26,12 @@ tmp/
 reviews/
 docs/review-status.json
 
+# Node.js / Next.js (standards/sveden/reference-site)
+node_modules/
+.next/
+out/
+standards/sveden/reference-site/data/parsed.sveden.json
+
 # MkDocs — docs/ собирается динамически из domains/standards/implementations
 # скриптом tools/build-site.sh; site/ — результат mkdocs build
 docs/
